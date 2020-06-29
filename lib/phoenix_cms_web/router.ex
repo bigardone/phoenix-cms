@@ -17,7 +17,9 @@ defmodule PhoenixCmsWeb.Router do
   scope "/", PhoenixCmsWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/", PageLive
+    live "/blog", ArticlesLive
+    live "/blog/:id/:slug", ShowArticleLive
   end
 
   # Other scopes may use custom stacks.

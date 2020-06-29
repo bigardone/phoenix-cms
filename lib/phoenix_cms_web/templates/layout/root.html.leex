@@ -6,10 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
     <%= live_title_tag assigns[:page_title] || "PhoenixCms", suffix: " · Phoenix Framework" %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
+    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+      <div class="container">
+        <div class="navbar-brand">
+          <%= live_patch "PhoenixCMS", to: Routes.live_path(@conn, PhoenixCmsWeb.PageLive), class: "navbar-item" %>
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="navbar-end">
+          <%= live_patch "Blog", to: Routes.live_path(@conn, PhoenixCmsWeb.ArticlesLive), class: "navbar-item" %>
+        </div>
+      </div>
+    </nav>
     <%= @inner_content %>
   </body>
 </html>

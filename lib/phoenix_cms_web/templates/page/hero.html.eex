@@ -1,0 +1,13 @@
+<section class="hero is-link is-medium">
+  <div class="hero-body">
+    <div class="container">
+      <header class="hero__header">
+        <h1 class="title is-1"><%= @content.title %></h1>
+        <p class="subtitle is-3"><%= @content.content %></p>
+      </header>
+      <figure class="image">
+        <img class="" src="<%= @content.image %>" alt="Placeholder image">
+      </figure>
+    </div>
+  </div>
+</section>

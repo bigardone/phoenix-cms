@@ -1,3 +1,7 @@
-<section class="">
-  <h1>Welcome to Phoenix!</h1>
-</section>
+<%= for content <- @contents, do: render_section(content) %>
+<div class="container">
+  <header class="mb-6"><h2 class="title">Latest articles</h2></header>
+  <section class="columns is-variable is-multiline is-mobile is-8">
+    <%= for article <- @articles, do: PhoenixCmsWeb.ArticlesLive.render_article(@socket, article) %>
+  </section>
+</div>

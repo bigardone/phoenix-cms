@@ -4,9 +4,22 @@ defmodule Services.Airtable do
   """
 
   @spec all(String.t()) :: {:ok, term} | {:error, non_neg_integer}
-  def all(base) do
+  def all(table) do
     client()
-    |> Tesla.get("/#{base}")
+    |> Tesla.get("/#{table}")
+    |> case do
+      {:ok, %{status: 200, body: body}} ->
+        {:ok, body}
+
+      {:ok, %{status: status}} ->
+        {:error, status}
+    end
+  end
+
+  @spec get(String.t(), String.t()) :: {:ok, term} | {:error, non_neg_integer}
+  def get(table, record_id) do
+    client()
+    |> Tesla.get("/#{table}/#{record_id}")
     |> case do
       {:ok, %{status: 200, body: body}} ->
         {:ok, body}

@@ -1,0 +1,25 @@
+<article class="article">
+  <section class="container mt-6">
+    <header class="article__header">
+      <h1 class="title"><%= @article.title %></h1>
+      <div class="media">
+        <div class="media-left">
+          <figure class="image is-48x48">
+            <img class="is-rounded avatar" src="<%= "https://avatars.dicebear.com/api/avataaars/#{@article.author}.svg" %>" alt="Placeholder image">
+          </figure>
+        </div>
+        <div class="media-content">
+          <p class="title is-6"><%= @article.author %></p>
+          <p class="subtitle is-7"><%= @article.published_at %></p>
+        </div>
+      </div>
+    </header>
+    <figure class="image main-image">
+      <img src="<%= @article.image %>">
+    </figure>
+    <p class="subtitle is-italic"><%= @article.description %></p>
+    <section class="article__content">
+      <%= raw(@article.content) %>
+    </section>
+  </section>
+</article>
