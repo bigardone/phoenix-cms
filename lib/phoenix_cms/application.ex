@@ -11,6 +11,17 @@ defmodule PhoenixCms.Application do
       PhoenixCmsWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: PhoenixCms.PubSub},
+
+      # Start cache processes
+      %{
+        id: ArticlesCache,
+        start: {PhoenixCms.Repo.Cache, :start_link, [[name: ArticlesCache]]}
+      },
+      %{
+        id: ContentsCache,
+        start: {PhoenixCms.Repo.Cache, :start_link, [[name: ContentsCache]]}
+      },
+
       # Start the Endpoint (http/https)
       PhoenixCmsWeb.Endpoint
       # Start a worker by calling: PhoenixCms.Worker.start_link(arg)
