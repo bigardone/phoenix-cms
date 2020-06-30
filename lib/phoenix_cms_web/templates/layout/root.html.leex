@@ -14,12 +14,7 @@
     <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
       <div class="container">
         <div class="navbar-brand">
-          <%= live_patch "PhoenixCMS", to: Routes.live_path(@conn, PhoenixCmsWeb.PageLive), class: "navbar-item" %>
-          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
+          <%= live_patch "PhoenixCMS", to: Routes.live_path(@conn, PhoenixCmsWeb.PageLive), class: "navbar-item has-text-weight-bold has-text-link" %>
         </div>
         <div class="navbar-end">
           <%= live_patch "Blog", to: Routes.live_path(@conn, PhoenixCmsWeb.ArticlesLive), class: "navbar-item" %>
@@ -27,5 +22,10 @@
       </div>
     </nav>
     <%= @inner_content %>
+    <footer class="footer mt-6">
+      <div class="content has-text-centered">
+        <p><strong>PhoenixCMS</strong> - crafted with ♥ by <a href="https://github.com/bigardone" target="_blank">bigardone</a></p>
+      </div>
+    </footer>
   </body>
 </html>

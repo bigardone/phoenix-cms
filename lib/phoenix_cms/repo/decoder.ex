@@ -35,6 +35,7 @@ defmodule PhoenixCms.Repo.Decoder do
         "fields" =>
           %{
             "id" => id,
+            "position" => position,
             "type" => type,
             "title" => title,
             "content" => content,
@@ -43,6 +44,7 @@ defmodule PhoenixCms.Repo.Decoder do
       }) do
     %Content{
       id: id,
+      position: position,
       type: type,
       title: title,
       content: content,

@@ -7,6 +7,7 @@ defmodule PhoenixCms.Content do
 
   @type t :: %Content{
           id: String.t(),
+          position: non_neg_integer,
           type: String.t(),
           title: String.t(),
           content: String.t(),
@@ -14,5 +15,5 @@ defmodule PhoenixCms.Content do
           styles: String.t()
         }
 
-  defstruct [:id, :type, :title, :content, :image, :styles]
+  defstruct [:id, :position, :type, :title, :content, :image, :styles]
 end
