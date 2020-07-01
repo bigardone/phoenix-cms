@@ -1,5 +1,6 @@
 defmodule PhoenixCmsWeb.Router do
   use PhoenixCmsWeb, :router
+  import Phoenix.LiveDashboard.Router, only: [live_dashboard: 2]
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -20,6 +21,13 @@ defmodule PhoenixCmsWeb.Router do
     live "/", PageLive
     live "/blog", ArticlesLive
     live "/blog/:id/:slug", ShowArticleLive
+  end
+
+  if Mix.env() == :dev do
+    scope "/" do
+      pipe_through :browser
+      live_dashboard "/dashboard", metrics: PhoenixCmsWeb.Telemetry
+    end
   end
 
   # Other scopes may use custom stacks.
