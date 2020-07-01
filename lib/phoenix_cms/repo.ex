@@ -8,29 +8,15 @@ defmodule PhoenixCms.Repo do
   @articles_table "articles"
   @contents_table "contents"
 
-  @spec articles :: {:ok, [Article]} | {:error, term}
-  def articles, do: all(@articles_table)
+  @spec articles(boolean) :: {:ok, [Article]} | {:error, term}
+  def articles(skip_cache \\ false)
+  def articles(false), do: all(@articles_table)
+  def articles(true), do: do_all(@articles_table)
 
-  @spec latest_articles :: {:ok, [Article]} | {:error, term}
-  def latest_articles do
-    @articles_table
-    |> all()
-    |> case do
-      {:ok, articles} ->
-        {:ok, Enum.take(articles, 2)}
-
-      other ->
-        other
-    end
-  end
-
-  @spec contents :: {:ok, [Article]} | {:error, term}
-  def contents do
-    with {:ok, items} <- all(@contents_table),
-         items <- Enum.sort_by(items, & &1.position) do
-      {:ok, items}
-    end
-  end
+  @spec contents(boolean) :: {:ok, [Article]} | {:error, term}
+  def contents(skip_cache \\ false)
+  def contents(false), do: all(@contents_table)
+  def contents(true), do: do_all(@contents_table)
 
   @spec get_article(String.t()) :: {:ok, Article.t()} | {:error, term}
   def get_article(id), do: get(@articles_table, id)
@@ -72,7 +58,7 @@ defmodule PhoenixCms.Repo do
     end
   end
 
-  defp cache_for_table(@articles_table), do: ArticlesCache
+  defp cache_for_table(@articles_table), do: PhoenixCms.Article.Cache
 
-  defp cache_for_table(@contents_table <> _), do: ContentsCache
+  defp cache_for_table(@contents_table), do: PhoenixCms.Content.Cache
 end

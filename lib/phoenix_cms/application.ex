@@ -13,14 +13,8 @@ defmodule PhoenixCms.Application do
       {Phoenix.PubSub, name: PhoenixCms.PubSub},
 
       # Start cache processes
-      %{
-        id: ArticlesCache,
-        start: {PhoenixCms.Repo.Cache, :start_link, [[name: ArticlesCache]]}
-      },
-      %{
-        id: ContentsCache,
-        start: {PhoenixCms.Repo.Cache, :start_link, [[name: ContentsCache]]}
-      },
+      PhoenixCms.Article.Cache,
+      PhoenixCms.Content.Cache,
 
       # Start the Endpoint (http/https)
       PhoenixCmsWeb.Endpoint

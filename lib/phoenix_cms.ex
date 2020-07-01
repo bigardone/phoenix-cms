@@ -7,8 +7,6 @@ defmodule PhoenixCms do
   if it comes from the database, an external API or others.
   """
 
-  defdelegate latest_articles, to: PhoenixCms.Repo
-
   defdelegate articles, to: PhoenixCms.Repo
 
   defdelegate contents, to: PhoenixCms.Repo
