@@ -3,7 +3,18 @@ defmodule PhoenixCmsWeb.LiveEncoder do
 
   alias PhoenixCms.{Article, Content}
 
-  def encode(articles) when is_list(articles) do
+  def contents(items) when is_list(items) do
+    {features, rest} =
+      items
+      |> Enum.map(&encode/1)
+      |> Enum.split_with(&(&1.type == "feature"))
+
+    rest
+    |> Enum.concat([%{features: features}])
+    |> List.flatten()
+  end
+
+  def articles(articles) do
     Enum.map(articles, &encode/1)
   end
 
@@ -11,10 +22,7 @@ defmodule PhoenixCmsWeb.LiveEncoder do
     Map.take(content, [:id, :type, :title, :content, :image, :styles])
   end
 
-  def encode(%Article{published_at: published_at, description: description} = article) do
-    article
-    |> Map.drop([:content])
-    |> Map.put(:description, description |> String.slice(0, 120) |> Kernel.<>("..."))
-    |> Map.put(:published_at, Date.to_iso8601(published_at))
+  def encode(%Article{} = article) do
+    Map.take(article, [:id, :slug, :title, :description, :image, :author, :published_at])
   end
 end

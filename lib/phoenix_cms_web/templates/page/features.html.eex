@@ -1,0 +1,18 @@
+<section class="section">
+  <div class="container mb-6 features">
+    <header class="mb-6">
+      <h2 class="title is-2">Features</h2>
+    </header>
+    <div class="columns is-multiline is-mobile is-8">
+      <%= for item <- @content do %>
+        <div class="column is-one-third feature">
+          <figure class="image feature__image">
+            <img src="<%= item.image %>" alt="Placeholder image">
+          </figure>
+          <header class="mb-4"><h4 class="title is-4"><%= item.title %></h4></header>
+          <p class="subtitle"><%= item.content %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

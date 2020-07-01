@@ -5,15 +5,12 @@ defmodule PhoenixCmsWeb.PageLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    with {:ok, contents} <- PhoenixCms.contents(),
-         {:ok, articles} <- PhoenixCms.latest_articles() do
-      socket =
-        socket
-        |> assign(:contents, LiveEncoder.encode(contents))
-        |> assign(:articles, LiveEncoder.encode(articles))
+    case PhoenixCms.contents() do
+      {:ok, contents} ->
+        socket = assign(socket, :contents, LiveEncoder.contents(contents))
 
-      {:ok, socket}
-    else
+        {:ok, socket}
+
       {:error, _} ->
         {:ok, socket}
     end
@@ -29,9 +26,13 @@ defmodule PhoenixCmsWeb.PageLive do
     Phoenix.View.render(PhoenixCmsWeb.PageView, "hero.html", content: content)
   end
 
-  def render_section(%{type: "feature"} = content) do
-    Phoenix.View.render(PhoenixCmsWeb.PageView, "feature.html", content: content)
+  def render_section(%{type: "text_and_image"} = content) do
+    Phoenix.View.render(PhoenixCmsWeb.PageView, "text_and_image.html", content: content)
   end
 
-  def render_section(_), do: nil
+  def render_section(%{features: content}) do
+    Phoenix.View.render(PhoenixCmsWeb.PageView, "features.html", content: content)
+  end
+
+  def render_section(_), do: ""
 end

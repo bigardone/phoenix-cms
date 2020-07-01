@@ -6,7 +6,7 @@ defmodule PhoenixCmsWeb.ArticlesLive do
   @impl true
   def mount(_params, _session, socket) do
     with {:ok, articles} <- PhoenixCms.articles() do
-      {:ok, assign(socket, :articles, LiveEncoder.encode(articles))}
+      {:ok, assign(socket, :articles, LiveEncoder.articles(articles))}
     else
       {:error, _} ->
         {:ok, socket}

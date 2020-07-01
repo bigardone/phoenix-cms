@@ -1,11 +1,11 @@
-<div class="container mb-6 feature">
+<div class="container text-and-image">
   <div class="columns is-variable is-mobile is-8">
     <div class="column is-half">
       <header class="mb-4"><h2 class="title"><%= @content.title %></h2></header>
       <p class="subtitle"><%= @content.content %></p>
     </div>
-    <div class="column is-half">
-      <figure class="image feature__image">
+    <div class="column is-half image-container">
+      <figure class="image">
         <img src="<%= @content.image %>" alt="Placeholder image">
       </figure>
     </div>

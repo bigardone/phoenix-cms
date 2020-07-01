@@ -63,14 +63,35 @@
   }
 }
 
-main .feature  {
-  &:nth-child(even) {
+main .text-and-image  {
+  margin-bottom: 8rem;
+
+  .image-container {
+    text-align: right;
+  }
+
+  &:nth-child(odd) {
     .columns {
       flex-direction: row-reverse;
+
     }
   }
 
-  .feature__image {
+  .image {
     box-shadow: 0 0px 30px rgba(0,0,0,.1);
+    width: 75%;
+  }
+}
+
+.features {
+  text-align: center;
+
+  .feature {
+    margin-bottom: 2rem;
+
+    .image {
+      width: 3rem;
+      margin: 0 auto 1rem auto;
+    }
   }
 }
