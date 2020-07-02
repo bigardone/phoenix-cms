@@ -9,18 +9,7 @@ defmodule PhoenixCmsWeb.PageLive do
   def mount(_params, _session, socket) do
     PhoenixCmsWeb.Endpoint.subscribe(@topic)
 
-    case fetch_contents() do
-      {:ok, contents} ->
-        socket =
-          socket
-          |> assign(:page_title, "Home")
-          |> assign(:contents, contents)
-
-        {:ok, socket}
-
-      {:error, _} ->
-        {:ok, socket}
-    end
+    {:ok, assign_socket(socket)}
   end
 
   @impl true
@@ -31,13 +20,7 @@ defmodule PhoenixCmsWeb.PageLive do
 
   @impl true
   def handle_info(%{event: "update"}, socket) do
-    case fetch_contents() do
-      {:ok, contents} ->
-        {:noreply, assign(socket, :contents, contents)}
-
-      _ ->
-        {:noreply, socket}
-    end
+    {:noreply, assign_socket(socket)}
   end
 
   def render_section(%{type: "hero"} = content) do
@@ -53,6 +36,22 @@ defmodule PhoenixCmsWeb.PageLive do
   end
 
   def render_section(_), do: ""
+
+  defp assign_socket(socket) do
+    case fetch_contents() do
+      {:ok, contents} ->
+        socket
+        |> assign(:page_title, "Home")
+        |> assign(:contents, contents)
+        |> put_flash(:error, nil)
+
+      {:error, _} ->
+        socket
+        |> assign(:page_title, "Home")
+        |> assign(:contents, nil)
+        |> put_flash(:error, "Error fetching data")
+    end
+  end
 
   defp fetch_contents do
     case PhoenixCms.contents() do

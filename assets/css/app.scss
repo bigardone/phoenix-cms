@@ -1,8 +1,20 @@
+.main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .main__content {
+    flex: 1;
+  }
+}
+
 .container {
   max-width: 1032px;
 }
 
 .navbar {
+  min-height: 4rem;
+
   > .container {
     min-height: 4rem;
   }
@@ -95,3 +107,4 @@ main .text-and-image  {
     }
   }
 }
+

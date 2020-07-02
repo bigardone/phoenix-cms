@@ -26,7 +26,8 @@ config :phoenix, :json_library, Jason
 # Airtable configuration
 config :phoenix_cms, Services.Airtable,
   api_key: "",
-  base_id: ""
+  base_id: "",
+  api_url: "https://api.airtable.com/v0/"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -9,18 +9,7 @@ defmodule PhoenixCmsWeb.ArticlesLive do
   def mount(_params, _session, socket) do
     PhoenixCmsWeb.Endpoint.subscribe(@topic)
 
-    case fetch_articles() do
-      {:ok, articles} ->
-        socket =
-          socket
-          |> assign(:page_title, "Blog")
-          |> assign(:articles, articles)
-
-        {:ok, socket}
-
-      {:error, _} ->
-        {:ok, socket}
-    end
+    {:ok, assign_socket(socket)}
   end
 
   @impl true
@@ -36,6 +25,22 @@ defmodule PhoenixCmsWeb.ArticlesLive do
 
   def render_article(socket, %{id: _id, slug: _slug} = article) do
     Phoenix.View.render(PhoenixCmsWeb.PageView, "article.html", socket: socket, article: article)
+  end
+
+  defp assign_socket(socket) do
+    case fetch_articles() do
+      {:ok, articles} ->
+        socket
+        |> assign(:page_title, "Blog")
+        |> assign(:articles, articles)
+        |> put_flash(:error, nil)
+
+      {:error, _} ->
+        socket
+        |> assign(:page_title, "Blog")
+        |> assign(:articles, nil)
+        |> put_flash(:error, "Error fetching data")
+    end
   end
 
   defp fetch_articles do

@@ -1,8 +1,10 @@
-<section class="section">
-  <div class="container">
-    <header class="mb-6"><h2 class="title">Blog</h2></header>
-    <div class="columns is-variable is-multiline is-mobile is-8">
-      <%= for article <- @articles, do: render_article(@socket, article) %>
+<%= if @articles  do %>
+  <section class="section">
+    <div class="container">
+      <header class="mb-6"><h2 class="title">Blog</h2></header>
+      <div class="columns is-variable is-multiline is-mobile is-8">
+        <%= for article <- @articles, do: render_article(@socket, article) %>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+<% end %>

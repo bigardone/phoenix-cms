@@ -11,23 +11,27 @@
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
-    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
-      <div class="container">
-        <div class="navbar-brand">
-          <%= live_patch "PhoenixCMS", to: Routes.live_path(@conn, PhoenixCmsWeb.PageLive), class: "navbar-item has-text-weight-bold has-text-link" %>
+    <main class="main">
+      <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+        <div class="container">
+          <div class="navbar-brand">
+            <%= live_patch "PhoenixCMS", to: Routes.live_path(@conn, PhoenixCmsWeb.PageLive), class: "navbar-item has-text-weight-bold has-text-link" %>
+          </div>
+          <div class="navbar-end">
+            <%= live_patch "Blog", to: Routes.live_path(@conn, PhoenixCmsWeb.ArticlesLive), class: "navbar-item" %>
+            <a href="https://airtable.com/shribMafJ0mAR7nic/tblLCFjonKFPr4yiN/viwgxDq0PyWSRs8N4?blocks=hide" class="navbar-item" target="_blank">Airtable base</a>
+          </div>
         </div>
-        <div class="navbar-end">
-          <%= live_patch "Blog", to: Routes.live_path(@conn, PhoenixCmsWeb.ArticlesLive), class: "navbar-item" %>
-          <a href="https://airtable.com/shribMafJ0mAR7nic/tblLCFjonKFPr4yiN/viwgxDq0PyWSRs8N4?blocks=hide" class="navbar-item" target="_blank">Airtable base</a>
+      </nav>
+      <div class="main__content">
+        <%= @inner_content %>
+      </div>
+      <footer class="footer mt-6 main-footer">
+        <div class="content has-text-centered">
+          <p><strong>PhoenixCMS</strong> - crafted with ♥ by <a href="https://github.com/bigardone" target="_blank">bigardone</a></p>
+          <p>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
         </div>
-      </div>
-    </nav>
-    <%= @inner_content %>
-    <footer class="footer mt-6">
-      <div class="content has-text-centered">
-        <p><strong>PhoenixCMS</strong> - crafted with ♥ by <a href="https://github.com/bigardone" target="_blank">bigardone</a></p>
-        <p>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
-      </div>
-    </footer>
+      </footer>
+    </main>
   </body>
 </html>

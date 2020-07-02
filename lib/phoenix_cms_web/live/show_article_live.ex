@@ -7,30 +7,29 @@ defmodule PhoenixCmsWeb.ShowArticleLive do
   def mount(%{"id" => id}, _session, socket) do
     PhoenixCmsWeb.Endpoint.subscribe(@topic)
 
-    case PhoenixCms.get_article(id) do
-      {:ok, article} ->
-        socket =
-          socket
-          |> assign(:page_title, article.title)
-          |> assign(:article, article)
-
-        {:ok, socket}
-
-      {:error, _} ->
-        {:ok, socket}
-    end
+    {:ok, assign_socket(socket, id)}
   end
 
   @impl true
   def handle_info(%{event: "update"}, socket) do
     id = socket.assigns.article.id
 
+    {:noreply, assign_socket(socket, id)}
+  end
+
+  defp assign_socket(socket, id) do
     case PhoenixCms.get_article(id) do
       {:ok, article} ->
-        {:noreply, assign(socket, :article, article)}
+        socket
+        |> assign(:page_title, article.title)
+        |> assign(:article, article)
+        |> put_flash(:error, nil)
 
       {:error, _} ->
-        {:noreply, socket}
+        socket
+        |> assign(:page_title, "Blog")
+        |> assign(:article, nil)
+        |> put_flash(:error, "Error fetching data")
     end
   end
 end
