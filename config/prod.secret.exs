@@ -1,7 +1,3 @@
-# In this file, we load production configuration and secrets
-# from environment variables. You can also hardcode secrets,
-# although such is generally not recommended and you have to
-# remember to add this file to your .gitignore.
 use Mix.Config
 
 secret_key_base =
@@ -18,12 +14,9 @@ config :phoenix_cms, PhoenixCmsWeb.Endpoint,
   ],
   secret_key_base: secret_key_base
 
-# ## Using releases (Elixir v1.9+)
-#
-# If you are doing OTP releases, you need to instruct Phoenix
-# to start each relevant endpoint:
-#
-#     config :phoenix_cms, PhoenixCmsWeb.Endpoint, server: true
-#
-# Then you can assemble a release by calling `mix release`.
-# See `mix help release` for more information.
+
+# Airtable configuration
+config :phoenix_cms, Services.Airtable,
+  api_key: System.get_env("AIRTABLE_API_KEY"),
+  base_id: System.get_env("AIRTABLE_BASE_ID"),
+  api_url: "https://api.airtable.com/v0/"
