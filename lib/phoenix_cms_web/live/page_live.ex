@@ -13,12 +13,6 @@ defmodule PhoenixCmsWeb.PageLive do
   end
 
   @impl true
-  def handle_event("show", %{"id" => id, "slug" => slug}, socket) do
-    {:noreply,
-     push_redirect(socket, to: Routes.live_path(socket, PhoenixCmsWeb.ShowArticleLive, id, slug))}
-  end
-
-  @impl true
   def handle_info(%{event: "update"}, socket) do
     {:noreply, assign_socket(socket)}
   end
