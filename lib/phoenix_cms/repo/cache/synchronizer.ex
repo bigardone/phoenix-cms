@@ -28,7 +28,7 @@ defmodule PhoenixCms.Repo.Cache.Synchronizer do
   def handle_info(:sync, cache) do
     case apply(cache, :fetch_fn, []).() do
       {:ok, items} ->
-        Cache.set(cache, items)
+        Cache.set_all(cache, items)
         schedule(cache)
         {:noreply, cache}
 
@@ -44,4 +44,3 @@ defmodule PhoenixCms.Repo.Cache.Synchronizer do
     Process.send_after(self(), :sync, @refresh_time)
   end
 end
-

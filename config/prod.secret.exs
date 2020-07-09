@@ -14,7 +14,6 @@ config :phoenix_cms, PhoenixCmsWeb.Endpoint,
   ],
   secret_key_base: secret_key_base
 
-
 # Airtable configuration
 config :phoenix_cms, Services.Airtable,
   api_key: System.get_env("AIRTABLE_API_KEY"),

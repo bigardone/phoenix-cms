@@ -8,3 +8,6 @@ config :phoenix_cms, PhoenixCmsWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Repo configuration
+config :phoenix_cms, PhoenixCms.Repo, adapter: PhoenixCms.Repo.Fake
