@@ -29,6 +29,9 @@ config :phoenix_cms, Services.Airtable,
   base_id: "",
   api_url: "https://api.airtable.com/v0/"
 
+# Tesla configuration
+config :tesla, adapter: Tesla.Adapter.Hackney
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
