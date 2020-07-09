@@ -46,13 +46,15 @@ defmodule PhoenixCms.Repo.Cache do
     end
   end
 
-  def set(name, items), do: GenServer.cast(name, {:set, items})
+  def set_all(name, items), do: GenServer.cast(name, {:set_all, items})
+  def set(name, id, item), do: GenServer.cast(name, {:set, id, item})
 
   @impl GenServer
   def init({name, table}) do
+    Process.flag(:trap_exit, true)
+
     :ets.new(table, [:set, :protected, :named_table])
 
-    Process.flag(:trap_exit, true)
     {:ok, pid} = Synchronizer.start_link(cache: name)
     ref = Process.monitor(pid)
 
@@ -60,8 +62,15 @@ defmodule PhoenixCms.Repo.Cache do
   end
 
   @impl GenServer
-  def handle_cast({:set, items}, %{table: table, name: name} = state) when is_list(items) do
+  def handle_cast({:set_all, items}, %{table: table, name: name} = state) when is_list(items) do
     Enum.each(items, &:ets.insert(table, {&1.id, &1}))
+    PhoenixCmsWeb.Endpoint.broadcast(apply(name, :topic, []), "update", %{})
+
+    {:noreply, state}
+  end
+
+  def handle_cast({:set, id, item}, %{table: table, name: name} = state) do
+    :ets.insert(table, {id, item})
     PhoenixCmsWeb.Endpoint.broadcast(apply(name, :topic, []), "update", %{})
 
     {:noreply, state}

@@ -1,4 +1,4 @@
-defmodule PhoenixCms.Repo.Decoder do
+defmodule PhoenixCms.Repo.Http.Decoder do
   @moduledoc false
 
   alias PhoenixCms.{Article, Content}
