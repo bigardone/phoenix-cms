@@ -2,13 +2,23 @@ defmodule PhoenixCms.Repo.Http do
   @moduledoc false
 
   alias __MODULE__.Decoder
-  alias PhoenixCms.Repo
+  alias PhoenixCms.{Article, Content, Repo}
   alias Services.Airtable
 
   @behaviour Repo
 
+  @articles_table "articles"
+  @contents_table "contents"
+
   @impl Repo
-  def all(table) do
+  def all(Article), do: do_all(@articles_table)
+  def all(Content), do: do_all(@contents_table)
+
+  @impl Repo
+  def get(Article, id), do: do_get(@articles_table, id)
+  def get(Content, id), do: do_get(@contents_table, id)
+
+  defp do_all(table) do
     case Airtable.all(table) do
       {:ok, %{"records" => records}} ->
         {:ok, Decoder.decode(records)}
@@ -18,8 +28,7 @@ defmodule PhoenixCms.Repo.Http do
     end
   end
 
-  @impl Repo
-  def get(table, id) do
+  defp do_get(table, id) do
     case Airtable.get(table, id) do
       {:ok, response} ->
         {:ok, Decoder.decode(response)}

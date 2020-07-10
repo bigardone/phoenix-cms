@@ -7,6 +7,8 @@ defmodule PhoenixCms.Repo.Cache do
 
   alias __MODULE__.Synchronizer
 
+  require Logger
+
   @callback start_link(keyword) :: GenServer.on_start()
   @callback fetch_fn :: fun
   @callback topic :: String.t()
@@ -26,9 +28,13 @@ defmodule PhoenixCms.Repo.Cache do
     |> :ets.tab2list()
     |> case do
       values when values != [] ->
+        Logger.info("#{cache}.all hit")
+
         {:ok, Enum.map(values, &elem(&1, 1))}
 
       _ ->
+        Logger.info("#{cache}.all miss")
+
         {:error, :not_found}
     end
   end
@@ -39,9 +45,11 @@ defmodule PhoenixCms.Repo.Cache do
     |> :ets.lookup(key)
     |> case do
       [{^key, value} | _] ->
+        Logger.info("#{cache}.get #{key} hit")
         {:ok, value}
 
       _ ->
+        Logger.info("#{cache}.get #{key} miss")
         {:error, :not_found}
     end
   end

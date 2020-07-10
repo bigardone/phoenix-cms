@@ -6,17 +6,16 @@ defmodule PhoenixCms.Repo.Fake do
   @behaviour Repo
 
   @impl Repo
-  def all("contents") do
+  def all(Content) do
     {:ok, [%Content{content: "Foo", id: "hero", position: 1, title: "PhoenixCMS", type: "hero"}]}
   end
 
-  def all("articles") do
+  def all(Article) do
     {:ok, []}
   end
 
   @impl Repo
-  def get("articles", _id) do
+  def get(Article, _id) do
     {:ok, %Article{}}
   end
 end
-
