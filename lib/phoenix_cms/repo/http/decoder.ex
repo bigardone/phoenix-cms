@@ -9,46 +9,36 @@ defmodule PhoenixCms.Repo.Http.Decoder do
 
   def decode(%{
         "id" => id,
-        "fields" => %{
-          "slug" => slug,
-          "title" => title,
-          "description" => description,
-          "image" => image,
-          "content" => content,
-          "author" => author,
-          "published_at" => published_at
-        }
+        "fields" =>
+          %{
+            "slug" => slug
+          } = fields
       }) do
     %Article{
       id: id,
       slug: slug,
-      title: title,
-      description: description,
-      image: decode_image(image),
-      content: content,
-      author: author,
-      published_at: Date.from_iso8601!(published_at)
+      title: Map.get(fields, "title", ""),
+      description: Map.get(fields, "description", ""),
+      image: decode_image(Map.get(fields, "image")),
+      content: Map.get(fields, "content", ""),
+      author: Map.get(fields, "author", ""),
+      published_at: Date.from_iso8601!(Map.get(fields, "published_at"))
     }
   end
 
   def decode(%{
         "fields" =>
           %{
-            "id" => id,
-            "position" => position,
-            "type" => type,
-            "title" => title,
-            "content" => content,
-            "image" => image
+            "type" => type
           } = fields
       }) do
     %Content{
-      id: id,
-      position: position,
+      id: Map.get(fields, "id", ""),
+      position: Map.get(fields, "position", ""),
       type: type,
-      title: title,
-      content: content,
-      image: decode_image(image),
+      title: Map.get(fields, "title", ""),
+      content: Map.get(fields, "content", ""),
+      image: decode_image(Map.get(fields, "image", "")),
       styles: Map.get(fields, "styles", "")
     }
   end
