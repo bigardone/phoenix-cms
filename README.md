@@ -1,5 +1,17 @@
 # PhoenixCms
 
+Headless CMS fun with Phoenix LiveView and Airtable.
+
+![](http://codeloveandboards.com/images/blog/phoenix-cms-1/site-9d4bf02d.jpg)
+
+## Tutorials
+
+- [Introduction](http://codeloveandboards.com/blog/2020/07/02/headless-cms-fun-with-phoenix-liveview-and-airtable-pt-1)
+- [The project set up and implementing the repository pattern.](http://codeloveandboards.com/blog/2020/07/11/headless-cms-fun-with-phoenix-liveview-and-airtable-pt-2)
+- Part 3 coming soon...
+
+## How to run it locally
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
@@ -7,13 +19,3 @@ To start your Phoenix server:
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
