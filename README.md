@@ -6,9 +6,9 @@ Headless CMS fun with Phoenix LiveView and Airtable.
 
 ## Tutorials
 
-- [Introduction](http://codeloveandboards.com/blog/2020/07/02/headless-cms-fun-with-phoenix-liveview-and-airtable-pt-1)
-- [The project set up and implementing the repository pattern.](http://codeloveandboards.com/blog/2020/07/11/headless-cms-fun-with-phoenix-liveview-and-airtable-pt-2)
-- Part 3 coming soon...
+1. [Introduction](http://codeloveandboards.com/blog/2020/07/02/headless-cms-fun-with-phoenix-liveview-and-airtable-pt-1)
+2. [The project set up and implementing the repository pattern.](http://codeloveandboards.com/blog/2020/07/11/headless-cms-fun-with-phoenix-liveview-and-airtable-pt-2)
+3. Coming soon...
 
 ## How to run it locally
 
