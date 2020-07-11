@@ -23,6 +23,9 @@ defmodule PhoenixCms.Repo.Http do
       {:ok, %{"records" => records}} ->
         {:ok, Decoder.decode(records)}
 
+      {:error, 404} ->
+        {:error, :not_found}
+
       other ->
         other
     end
@@ -32,6 +35,9 @@ defmodule PhoenixCms.Repo.Http do
     case Airtable.get(table, id) do
       {:ok, response} ->
         {:ok, Decoder.decode(response)}
+
+      {:error, 404} ->
+        {:error, :not_found}
 
       other ->
         other
