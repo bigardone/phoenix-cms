@@ -15,6 +15,7 @@ defmodule PhoenixCms.Repo.Cache do
 
   @articles_table :articles
   @contents_table :contents
+  @secret "cache secret"
 
   def start_link(args) do
     name = Keyword.fetch!(args, :name)
@@ -61,20 +62,27 @@ defmodule PhoenixCms.Repo.Cache do
   def init({name, table}) do
     Process.flag(:trap_exit, true)
 
-    :ets.new(table, [:set, :protected, :named_table])
+    :ets.new(table, [:ordered_set, :protected, :named_table])
 
     {:ok, pid} = Synchronizer.start_link(cache: name)
     ref = Process.monitor(pid)
 
-    {:ok, %{table: table, name: name, synchronizer_ref: ref}}
+    {:ok, %{table: table, name: name, synchronizer_ref: ref, hash: ""}}
   end
 
   @impl GenServer
-  def handle_cast({:set_all, items}, %{table: table, name: name} = state) when is_list(items) do
-    Enum.each(items, &:ets.insert(table, {&1.id, &1}))
-    PhoenixCmsWeb.Endpoint.broadcast(apply(name, :topic, []), "update", %{})
+  def handle_cast({:set_all, items}, %{table: table, name: name, hash: hash} = state)
+      when is_list(items) do
+    new_hash = generate_hash(items)
 
-    {:noreply, state}
+    if hash != new_hash do
+      Logger.info("#{name}.set_all setting new items and broadcasting")
+
+      Enum.each(items, &:ets.insert(table, {&1.id, &1}))
+      PhoenixCmsWeb.Endpoint.broadcast(apply(name, :topic, []), "update", %{})
+    end
+
+    {:noreply, %{state | hash: new_hash}}
   end
 
   def handle_cast({:set, id, item}, %{table: table, name: name} = state) do
@@ -107,4 +115,10 @@ defmodule PhoenixCms.Repo.Cache do
 
   defp table_for(PhoenixCms.Article.Cache), do: @articles_table
   defp table_for(PhoenixCms.Content.Cache), do: @contents_table
+
+  defp generate_hash(items) do
+    :sha256
+    |> :crypto.hmac(@secret, :erlang.term_to_binary(items))
+    |> Base.encode64()
+  end
 end
