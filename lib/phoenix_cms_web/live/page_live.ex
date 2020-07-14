@@ -39,7 +39,7 @@ defmodule PhoenixCmsWeb.PageLive do
         |> assign(:contents, contents)
         |> put_flash(:error, nil)
 
-      {:error, _} ->
+      _ ->
         socket
         |> assign(:page_title, "Home")
         |> assign(:contents, nil)
@@ -48,17 +48,13 @@ defmodule PhoenixCmsWeb.PageLive do
   end
 
   defp fetch_contents do
-    case PhoenixCms.contents() do
-      {:ok, contents} ->
-        contents =
-          contents
-          |> Enum.sort_by(& &1.position)
-          |> LiveEncoder.contents()
+    with {:ok, contents} <- PhoenixCms.contents() do
+      contents =
+        contents
+        |> Enum.sort_by(& &1.position)
+        |> LiveEncoder.contents()
 
-        {:ok, contents}
-
-      other ->
-        other
+      {:ok, contents}
     end
   end
 end
