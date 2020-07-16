@@ -35,7 +35,7 @@ defmodule PhoenixCmsWeb.ArticlesLive do
         |> assign(:articles, articles)
         |> put_flash(:error, nil)
 
-      {:error, _} ->
+      _ ->
         socket
         |> assign(:page_title, "Blog")
         |> assign(:articles, nil)
@@ -44,16 +44,12 @@ defmodule PhoenixCmsWeb.ArticlesLive do
   end
 
   defp fetch_articles do
-    case PhoenixCms.articles() do
-      {:ok, articles} ->
-        articles
-        |> Enum.sort_by(& &1.published_at)
-        |> LiveEncoder.articles()
+    with {:ok, articles} <- PhoenixCms.articles() do
+      articles
+      |> Enum.sort_by(& &1.published_at)
+      |> LiveEncoder.articles()
 
-        {:ok, articles}
-
-      other ->
-        other
+      {:ok, articles}
     end
   end
 end

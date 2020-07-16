@@ -25,7 +25,7 @@ defmodule PhoenixCmsWeb.ShowArticleLive do
         |> assign(:article, article)
         |> put_flash(:error, nil)
 
-      {:error, _} ->
+      _ ->
         socket
         |> assign(:page_title, "Blog")
         |> assign(:article, nil)
