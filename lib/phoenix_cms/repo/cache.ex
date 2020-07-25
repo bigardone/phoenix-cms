@@ -9,19 +9,12 @@ defmodule PhoenixCms.Repo.Cache do
 
   require Logger
 
+  @callback table_name :: atom
   @callback start_link(keyword) :: GenServer.on_start()
   @callback fetch_fn :: fun
   @callback topic :: String.t()
 
-  @articles_table :articles
-  @contents_table :contents
   @secret "cache secret"
-
-  def start_link(args) do
-    name = Keyword.fetch!(args, :name)
-    table = table_for(name)
-    GenServer.start_link(__MODULE__, {name, table}, name: name)
-  end
 
   def all(cache) do
     cache
@@ -55,45 +48,52 @@ defmodule PhoenixCms.Repo.Cache do
     end
   end
 
-  def set_all(name, items), do: GenServer.cast(name, {:set_all, items})
-  def set(name, id, item), do: GenServer.cast(name, {:set, id, item})
+  def set_all(cache, items), do: GenServer.cast(cache, {:set_all, items})
+  def set(cache, id, item), do: GenServer.cast(cache, {:set, id, item})
 
   @impl GenServer
-  def init({name, table}) do
+  def init(name) do
     Process.flag(:trap_exit, true)
 
-    :ets.new(table, [:ordered_set, :protected, :named_table])
+    name
+    |> table_for()
+    |> :ets.new([:ordered_set, :protected, :named_table])
 
     {:ok, pid} = Synchronizer.start_link(cache: name)
     ref = Process.monitor(pid)
 
-    {:ok, %{table: table, name: name, synchronizer_ref: ref, hash: ""}}
+    {:ok, %{name: name, synchronizer_ref: ref, hash: ""}}
   end
 
   @impl GenServer
-  def handle_cast({:set_all, items}, %{table: table, name: name, hash: hash} = state)
+  def handle_cast({:set_all, items}, %{name: name, hash: hash} = state)
       when is_list(items) do
     new_hash = generate_hash(items)
 
     if hash != new_hash do
       Logger.info("#{name}.set_all setting new items and broadcasting")
 
-      Enum.each(items, &:ets.insert(table, {&1.id, &1}))
+      Enum.each(items, &:ets.insert(table_for(name), {&1.id, &1}))
       PhoenixCmsWeb.Endpoint.broadcast(apply(name, :topic, []), "update", %{})
     end
 
     {:noreply, %{state | hash: new_hash}}
   end
 
-  def handle_cast({:set, id, item}, %{table: table, name: name} = state) do
-    :ets.insert(table, {id, item})
+  def handle_cast({:set, id, item}, %{name: name} = state) do
+    name
+    |> table_for()
+    |> :ets.insert({id, item})
+
     PhoenixCmsWeb.Endpoint.broadcast(apply(name, :topic, []), "update", %{})
 
     {:noreply, state}
   end
 
-  def handle_cast({:set, item}, %{table: table} = state) do
-    :ets.insert(table, {item.id, item})
+  def handle_cast({:set, item}, %{name: name} = state) do
+    name
+    |> table_for()
+    |> :ets.insert({item.id, item})
 
     {:noreply, state}
   end
@@ -113,8 +113,7 @@ defmodule PhoenixCms.Repo.Cache do
     {:noreply, state}
   end
 
-  defp table_for(PhoenixCms.Article.Cache), do: @articles_table
-  defp table_for(PhoenixCms.Content.Cache), do: @contents_table
+  defp table_for(name), do: apply(name, :table_name, [])
 
   defp generate_hash(items) do
     :sha256

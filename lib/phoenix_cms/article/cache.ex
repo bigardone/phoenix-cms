@@ -1,6 +1,6 @@
 defmodule PhoenixCms.Article.Cache do
   @moduledoc """
-    Article cache
+  Article cache
   """
 
   alias PhoenixCms.{Repo, Repo.Cache}
@@ -20,8 +20,11 @@ defmodule PhoenixCms.Article.Cache do
   end
 
   @impl Cache
+  def table_name, do: :articles
+
+  @impl Cache
   def start_link(_args) do
-    Cache.start_link(name: __MODULE__)
+    GenServer.start_link(Cache, __MODULE__, name: __MODULE__)
   end
 
   @impl Cache
