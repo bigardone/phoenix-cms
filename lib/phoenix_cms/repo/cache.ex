@@ -49,6 +49,7 @@ defmodule PhoenixCms.Repo.Cache do
   end
 
   def set_all(cache, items), do: GenServer.cast(cache, {:set_all, items})
+
   def set(cache, id, item), do: GenServer.cast(cache, {:set, id, item})
 
   @impl GenServer
@@ -86,14 +87,6 @@ defmodule PhoenixCms.Repo.Cache do
     |> :ets.insert({id, item})
 
     PhoenixCmsWeb.Endpoint.broadcast(apply(name, :topic, []), "update", %{})
-
-    {:noreply, state}
-  end
-
-  def handle_cast({:set, item}, %{name: name} = state) do
-    name
-    |> table_for()
-    |> :ets.insert({item.id, item})
 
     {:noreply, state}
   end
