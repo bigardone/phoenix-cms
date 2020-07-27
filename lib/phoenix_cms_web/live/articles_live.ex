@@ -14,13 +14,7 @@ defmodule PhoenixCmsWeb.ArticlesLive do
 
   @impl true
   def handle_info(%{event: "update"}, socket) do
-    case fetch_articles() do
-      {:ok, articles} ->
-        {:noreply, assign(socket, :articles, articles)}
-
-      _ ->
-        {:noreply, socket}
-    end
+    {:noreply, assign_socket(socket)}
   end
 
   def render_article(socket, %{id: _id, slug: _slug} = article) do
