@@ -26,16 +26,13 @@ defmodule PhoenixCms.Repo.Cache.Synchronizer do
 
   @impl GenServer
   def handle_info(:sync, cache) do
-    case apply(cache, :fetch_fn, []).() do
-      {:ok, items} ->
-        Cache.set_all(cache, items)
-        schedule(cache)
-        {:noreply, cache}
-
-      _ ->
-        schedule(cache)
-        {:noreply, cache}
+    with {:ok, items} <- apply(cache, :fetch_fn, []).() do
+      Cache.set_all(cache, items)
     end
+
+    schedule(cache)
+
+    {:noreply, cache}
   end
 
   defp schedule(cache) do
