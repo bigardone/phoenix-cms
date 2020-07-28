@@ -2,7 +2,7 @@
 
 Headless CMS fun with Phoenix LiveView and Airtable.
 
-![](http://codeloveandboards.com/images/blog/phoenix-cms-1/site-9d4bf02d.jpg)
+![](http://codeloveandboards.com/images/blog/phoenix-cms-1/real-time-b21f8c07.gif)
 
 ## Tutorial
 
