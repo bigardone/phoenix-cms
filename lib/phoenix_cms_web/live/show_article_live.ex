@@ -14,7 +14,7 @@ defmodule PhoenixCmsWeb.ShowArticleLive do
   def handle_info(%{event: "update"}, socket) do
     id = socket.assigns.article.id
 
-    {:noreply, assign_socket(socket, id)}
+    {:noreply, assign_socket(socket, id), temporary_assigns: [article: nil]}
   end
 
   defp assign_socket(socket, id) do

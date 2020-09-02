@@ -9,7 +9,7 @@ defmodule PhoenixCmsWeb.ArticlesLive do
   def mount(_params, _session, socket) do
     PhoenixCmsWeb.Endpoint.subscribe(@topic)
 
-    {:ok, assign_socket(socket)}
+    {:ok, assign_socket(socket), temporary_assigns: [articles: []]}
   end
 
   @impl true
